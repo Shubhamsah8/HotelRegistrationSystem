@@ -7,7 +7,7 @@ import java.time.DayOfWeek;
 public class Hotel {
 
     private String name;
-    private Map<LocalDate, Integer> regularRates;
+    private Map<LocalDate date, rate> regularRates;
 
     public Hotel(String name) {
         this.name = name;
