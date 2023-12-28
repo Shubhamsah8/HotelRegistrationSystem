@@ -32,9 +32,13 @@ public class HotelReservation{
         int totalCost = 0;
 
         while(!startDate.isAfter(endDate)){
-            totalCost += hotel.getRegularRates(startDate);
+            totalCost += hotel.getRates(startDate);
             startDate.plusDays(1);
         }
         return totalCost;
     }
+
+//    public String findCheapestHotelByRating(LocalDate startDate, LocalDate endDate){
+//        Hotel cheapestHotel
+//    }
 }
