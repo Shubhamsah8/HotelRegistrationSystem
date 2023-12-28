@@ -38,7 +38,17 @@ public class HotelReservation{
         return totalCost;
     }
 
-//    public String findCheapestHotelByRating(LocalDate startDate, LocalDate endDate){
-//        Hotel cheapestHotel
-//    }
+    public String findCheapestHotelByRating(LocalDate startDate, LocalDate endDate){
+        Hotel cheapestHotel = null;
+        for(Hotel hotel: hotels){
+            if(cheapestHotel == null || compareHotels(hotel, cheapestHotel) <0){
+                cheapestHotel = hotel;
+            }
+        }
+        return (cheapestHotel != null)? cheapestHotel.getName() +", Total Rates: $"+new HotelReservation().calculateTotalHotelCost(cheapestHotel,startDate, endDate): "No Hotels Available";
+    }
+
+    public int compareHotels(Hotel hotel1, Hotel hotel2){
+        return Integer.compare(hotel1.getRating(), hotel2.getRating());
+    }
 }
