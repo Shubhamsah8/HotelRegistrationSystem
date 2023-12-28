@@ -3,6 +3,7 @@ import org.example.Hotel;
 
 import java.time.LocalDate;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,50 +13,46 @@ class ReservationSystemTest {
 
 
     @Test
-    void testFindCheapestHotel(){
-        Hotel lakewood = new Hotel("Lakewood");
-        lakewood.addRegularRates(LocalDate.of(2020, 9, 10), 100);
-        lakewood.addRegularRates(LocalDate.of(2020, 9, 11), 120);
-
-        Hotel bridgewood = new Hotel("Bridgewood");
-        bridgewood.addRegularRates(LocalDate.of(2020, 9, 10), 120);
-        bridgewood.addRegularRates(LocalDate.of(2020, 9, 11), 100);
-
-        Hotel ridgewood = new Hotel("Ridgewood");
-        ridgewood.addRegularRates(LocalDate.of(2020, 9, 10), 150);
-        ridgewood.addRegularRates(LocalDate.of(2020, 9, 11), 150);
-
-        HotelReservation reservationSystem = new HotelReservation();
-        reservationSystem.addHotel(lakewood);
-        reservationSystem.addHotel(bridgewood);
-        reservationSystem.addHotel(ridgewood);
-
-        String cheapestHotel = reservationSystem.findCheapestHotel(LocalDate.of(2020, 9, 10), LocalDate.of(2020, 9, 11));
-        assertEquals("Lakewood, Total Rates: $220", cheapestHotel);
+    void testHotelName(){
+        Hotel hotel1 = new Hotel("Lakewood");
+        Assert.assertEquals("Lakewood", hotel1.getName());
     }
 
     @Test
-    void testRegularCustomerRates() {
+    void testRate(){
+        Hotel hotel1 = new Hotel("Lakewood");
+        hotel1.addRates(LocalDate.of(2023, 12, 5), 560);
+        Assert.assertEquals(560, hotel1.getRates(LocalDate.of(2023, 12,5)));
+    }
+    @Test
+    void testFindCheapestHotel(){
         Hotel lakewood = new Hotel("Lakewood");
-        lakewood.addRegularRates(LocalDate.of(2020, 9, 10), 100);
-        lakewood.addRegularRates(LocalDate.of(2020, 9, 11), 120);
+        lakewood.addRates(LocalDate.of(2023, 12, 1), 600);
+        lakewood.addRates(LocalDate.of(2023, 12, 2), 500);
 
-        // Other hotels with regular rates
+        Hotel redwood = new Hotel("Redwood");
+        redwood.addRates(LocalDate.of(2023, 12, 1), 300);
+        redwood.addRates(LocalDate.of(2023, 12, 2), 500);
+
         Hotel bridgewood = new Hotel("Bridgewood");
-        bridgewood.addRegularRates(LocalDate.of(2020, 9, 10), 120);
-        bridgewood.addRegularRates(LocalDate.of(2020, 9, 11), 100);
+        bridgewood.addRates(LocalDate.of(2023,12, 1), 350);
+        bridgewood.addRates(LocalDate.of(2023, 12, 2), 400);
 
-        Hotel ridgewood = new Hotel("Ridgewood");
-        ridgewood.addRegularRates(LocalDate.of(2020, 9, 10), 150);
-        ridgewood.addRegularRates(LocalDate.of(2020, 9, 11), 150);
+        HotelReservation hotelReservation = new HotelReservation();
+        hotelReservation.addHotel(lakewood);
+        hotelReservation.addHotel(redwood);
+        hotelReservation.addHotel(bridgewood);
 
-        HotelReservation reservationSystem = new HotelReservation();
-        reservationSystem.addHotel(lakewood);
-        reservationSystem.addHotel(bridgewood);
-        reservationSystem.addHotel(ridgewood);
+        String cheapHotel = hotelReservation.findCheapestHotel(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 15));
+        System.out.println(cheapHotel);
+        Assert.assertEquals("Redwood Total Rate: $800", cheapHotel);
+    }
 
-        // Assuming regular customer rates are used in findCheapestHotel
-        String cheapestHotel = reservationSystem.findCheapestHotel(LocalDate.of(2020, 9, 10), LocalDate.of(2020, 9, 11));
-        assertEquals("Lakewood, Total Rates: $190", cheapestHotel);
+    @Test
+    void testRating(){
+        Hotel hotel1 = new Hotel("Lakewood");
+        hotel1.addRates(LocalDate.of(2023, 12, 1), 500);
+        hotel1.setRating(4);
+        Assert.assertEquals(4, hotel1.getRating());
     }
 }
