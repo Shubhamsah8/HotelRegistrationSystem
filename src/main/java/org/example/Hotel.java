@@ -40,13 +40,6 @@ public class Hotel {
         regularRates.put(date, rate);
     }
 
-    public int getRating(){
-        return rating;
-    }
-
-    public void setRating(int rating){
-        this.rating = Math.max(1, Math.min(5,rating));
-    }
     public int getRegularRates(LocalDate date) {
         return regularRates.get(date);
     }
