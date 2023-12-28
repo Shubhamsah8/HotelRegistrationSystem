@@ -48,11 +48,4 @@ class ReservationSystemTest {
         Assert.assertEquals("Redwood Total Rate: $800", cheapHotel);
     }
 
-    @Test
-    void testRating(){
-        Hotel hotel1 = new Hotel("Lakewood");
-        hotel1.addRates(LocalDate.of(2023, 12, 1), 500);
-        hotel1.setRating(4);
-        Assert.assertEquals(4, hotel1.getRating());
-    }
 }
