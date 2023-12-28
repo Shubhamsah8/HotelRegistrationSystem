@@ -38,7 +38,4 @@ public class HotelReservation{
         return totalCost;
     }
 
-//    public String findCheapestHotelByRating(LocalDate startDate, LocalDate endDate){
-//        Hotel cheapestHotel
-//    }
 }
