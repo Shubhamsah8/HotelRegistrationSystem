@@ -160,4 +160,32 @@ class ReservationSystemTest {
         Assert.assertEquals(110, bridgewood.getSpecialRates(LocalDate.of(2024, 1, 6)));
         Assert.assertEquals(80, lakewood.getSpecialRates(LocalDate.of(2024, 1, 1)));
     }
+
+    /**
+     * Test cases find the cheapest best rated hotel for Reward customer.
+     */
+    @Test
+    void testCheapestBestRatedHotelForRewardCustomer(){
+        Hotel lakewood = new Hotel("lakewood");
+        lakewood.addSpecialRates(LocalDate.of(2024, 1, 1), 80);
+        lakewood.addSpecialRates(LocalDate.of(2023, 12, 31), 80);
+        lakewood.setRating(5);
+
+        Hotel bridgewood = new Hotel("bridgewood");
+        bridgewood.addSpecialRates(LocalDate.of(2024, 1, 1), 50);
+        bridgewood.addSpecialRates(LocalDate.of(2023, 12, 31), 110);
+        bridgewood.setRating(4);
+
+        Hotel ridgewood = new Hotel("ridgewood");
+        ridgewood.addSpecialRates(LocalDate.of(2024, 1, 1), 40);
+        ridgewood.addSpecialRates(LocalDate.of(2023, 12, 31), 100);
+        ridgewood.setRating(3);
+
+        HotelReservation hotelReservation = new HotelReservation();
+        hotelReservation.addHotel(lakewood);
+        hotelReservation.addHotel(bridgewood);
+        hotelReservation.addHotel(ridgewood);
+
+        Assert.assertEquals("lakewood", hotelReservation.findCheapestBestRatedHotelForRewardCustomer(LocalDate.of(2023, 12, 31), LocalDate.of(2024, 1, 1)).getName());
+    }
 }
