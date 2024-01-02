@@ -8,6 +8,7 @@ interface HotelReservationInterface{
     String findCheapestHotel(LocalDate startDate, LocalDate endDate);
     String findCheapestHotelByRating(LocalDate startDate, LocalDate endDate);
     Hotel findBestRatedHotel(LocalDate startDate, LocalDate endDate);
+
 }
 /**
  * HotelReservation class representing a hotel reservation system.

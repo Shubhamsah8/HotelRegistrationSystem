@@ -14,6 +14,8 @@ public class Hotel {
     private Map<LocalDate, Integer> weekdayRate;
     private Map<LocalDate, Integer> weekendRate;
     private int rating;
+    private Map<LocalDate, Integer> specialWeekDayRate;
+    private Map<LocalDate, Integer> specialWeekendRate;
 
     /**
      * Constructor to initialize a Hotel object with the given name.
@@ -26,6 +28,8 @@ public class Hotel {
         this.weekdayRate = new HashMap<>();
         this.weekendRate = new HashMap<>();
         this.rating = 0;
+        this.specialWeekDayRate = new HashMap<>();
+        this.specialWeekendRate = new HashMap<>();
     }
 
     /**
@@ -45,14 +49,51 @@ public class Hotel {
     }
 
     /**
+     * Add rates for specific dates, option to specify if it's special rates.
+     * @param date for specific dates.
+     * @param rate to add the rates.
+     * @param isSpecial to check if it's special or not.
+     */
+     public void addRates(LocalDate date, int rate, boolean isSpecial){
+        boolean isWeekend = date.getDayOfWeek() == DayOfWeek.SUNDAY || date.getDayOfWeek() == DayOfWeek.SATURDAY;
+        if(isWeekend){
+            (isSpecial? specialWeekendRate: weekendRate).put(date, rate);
+        }
+        else{
+            (isSpecial? specialWeekDayRate: weekdayRate).put(date, rate);
+        }
+     }
+
+    /**
+     * Adding special rates by using the above function for convineince.
+     * Like I don't need to write boolean value again and again.
+     * @param date date for the special customer.
+     * @param rate rate for the special customer.
+     */
+     public void addSpecialRates(LocalDate date, int rate){
+         addRates(date, rate, true);
+     }
+
+    /**
      * Gets the rate for a specific date.
      *
      * @param date The date for which the rate is retrieved.
      * @return The rate for the specified date.
      */
     public int getRates(LocalDate date) {
-        DayOfWeek dayOfWeek = date.getDayOfWeek();
-        Map<LocalDate, Integer> rates = (date.getDayOfWeek() == DayOfWeek.SUNDAY || date.getDayOfWeek() == DayOfWeek.SATURDAY) ? weekendRate : weekdayRate;
+        boolean isWeekend = date.getDayOfWeek() == DayOfWeek.SUNDAY || date.getDayOfWeek() == DayOfWeek.SATURDAY;
+        Map<LocalDate, Integer> rates = isWeekend? weekendRate: weekdayRate;
+        return rates.get(date);
+    }
+
+    /**
+     * Get the rate for a specific date for the special customer.
+     * @param date The date for which the rate is retrieved.
+     * @return The rate for the specified date.
+     */
+    public int getSpecialRates(LocalDate date) {
+        boolean isWeekend = date.getDayOfWeek() == DayOfWeek.SUNDAY || date.getDayOfWeek() == DayOfWeek.SATURDAY;
+        Map<LocalDate, Integer> rates = isWeekend? specialWeekendRate: specialWeekDayRate;
         return rates.get(date);
     }
 
@@ -84,7 +125,6 @@ public class Hotel {
     public int getRating() {
         return rating;
     }
-
     /**
      * Sets the rating of the hotel, constrained to be between 1 and 5.
      *
