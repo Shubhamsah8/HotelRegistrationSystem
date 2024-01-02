@@ -134,4 +134,30 @@ class ReservationSystemTest {
 
         Assert.assertEquals("Bridgewood", hotelReservation.findBestRatedHotel(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 2)).getName());
     }
+
+    /**
+     * Test case to check whether the special rates get added or not.
+     */
+    @Test
+    void testSpecialRates(){
+        Hotel lakewood = new Hotel("lakewood");
+        lakewood.addSpecialRates(LocalDate.of(2024, 1, 1), 80);
+        lakewood.addSpecialRates(LocalDate.of(2023, 1, 6), 80);
+
+        Hotel bridgewood = new Hotel("bridgewood");
+        bridgewood.addSpecialRates(LocalDate.of(2024, 1, 1), 50);
+        bridgewood.addSpecialRates(LocalDate.of(2024, 1, 6), 110);
+
+        Hotel ridgewood = new Hotel("ridgewood");
+        ridgewood.addSpecialRates(LocalDate.of(2024, 1, 1), 40);
+        ridgewood.addSpecialRates(LocalDate.of(2024, 1, 6), 100);
+
+        HotelReservation hotelReservation = new HotelReservation();
+        hotelReservation.addHotel(lakewood);
+        hotelReservation.addHotel(bridgewood);
+        hotelReservation.addHotel(ridgewood);
+
+        Assert.assertEquals(110, bridgewood.getSpecialRates(LocalDate.of(2024, 1, 6)));
+        Assert.assertEquals(80, lakewood.getSpecialRates(LocalDate.of(2024, 1, 1)));
+    }
 }
