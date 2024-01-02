@@ -1,10 +1,18 @@
+package org.example;
+
 import java.time.LocalDate;
 import java.util.*;
 
+interface HotelReservationInterface{
+    void addHotel(Hotel hotel);
+    String findCheapestHotel(LocalDate startDate, LocalDate endDate);
+    String findCheapestHotelByRating(LocalDate startDate, LocalDate endDate);
+    Hotel findBestRatedHotel(LocalDate startDate, LocalDate endDate);
+}
 /**
- * HotelReservation class representing a system for managing hotels and finding the cheapest hotel.
+ * HotelReservation class representing a hotel reservation system.
  */
-public class HotelReservation {
+public class HotelReservation implements HotelReservationInterface{
     private List<Hotel> hotels;
 
     /**
@@ -19,76 +27,86 @@ public class HotelReservation {
      *
      * @param hotel The hotel to be added.
      */
+    @Override
     public void addHotel(Hotel hotel) {
-        // @description: Adds a hotel to the list of hotels.
-        // @parameters: Hotel hotel - the hotel to be added.
         hotels.add(hotel);
     }
 
     /**
-     * Finds the cheapest hotel based on total rates for a specified date range.
+     * Finds the cheapest hotel based on rates for a given date range.
      *
-     * @param startDate The start date of the date range.
-     * @param endDate   The end date of the date range.
-     * @return A string containing the name of the cheapest hotel and its total rate for the specified date range.
+     * @param startDate The start date of the reservation.
+     * @param endDate   The end date of the reservation.
+     * @return A string representation of the cheapest hotel and its total cost.
      */
+    @Override
     public String findCheapestHotel(LocalDate startDate, LocalDate endDate) {
-        // @description: Finds the cheapest hotel based on total rates for a specified date range.
-        // @parameters: LocalDate startDate - the start date of the date range,
-        //              LocalDate endDate - the end date of the date range.
-        int minCost = Integer.MAX_VALUE;
+        int min_cost = Integer.MAX_VALUE;
         String cheapestHotel = null;
 
         for (Hotel hotel : hotels) {
             int totalCost = calculateTotalHotelCost(hotel, startDate, endDate);
-            if (totalCost < minCost) {
-                minCost = totalCost;
+            if (totalCost < min_cost) {
+                min_cost = totalCost;
                 cheapestHotel = hotel.getName();
             }
         }
-        return (cheapestHotel != null) ? cheapestHotel + " Total Rate: $" + minCost : "No Hotels Available";
+        return cheapestHotel + " Total Rate: $" + min_cost;
     }
 
     /**
-     * Calculates the total cost of a hotel for a specified date range.
+     * Calculates the total cost of staying at a hotel for a given date range.
      *
-     * @param hotel     The hotel for which the total cost is calculated.
-     * @param startDate The start date of the date range.
-     * @param endDate   The end date of the date range.
-     * @return The total cost of the hotel for the specified date range.
+     * @param hotel     The hotel for which the cost is calculated.
+     * @param startDate The start date of the reservation.
+     * @param endDate   The end date of the reservation.
+     * @return The total cost of staying at the hotel.
      */
     public int calculateTotalHotelCost(Hotel hotel, LocalDate startDate, LocalDate endDate) {
-        // @description: Calculates the total cost of a hotel for a specified date range.
-        // @parameters: Hotel hotel - the hotel for which the total cost is calculated,
-        //              LocalDate startDate - the start date of the date range,
-        //              LocalDate endDate - the end date of the date range.
         int totalCost = 0;
 
         while (!startDate.isAfter(endDate)) {
             totalCost += hotel.getRates(startDate);
-            startDate = startDate.plusDays(1);
+            startDate.plusDays(1);
         }
         return totalCost;
     }
 
     /**
-     * Finds the cheapest hotel based on hotel ratings for a specified date range.
+     * Finds the cheapest hotel based on rating for a given date range.
      *
-     * @param startDate The start date of the date range.
-     * @param endDate   The end date of the date range.
-     * @return A string containing the name of the cheapest hotel by rating and its total rate for the specified date range.
+     * @param startDate The start date of the reservation.
+     * @param endDate   The end date of the reservation.
+     * @return A string representation of the cheapest hotel by rating and its total cost.
      */
+    @Override
     public String findCheapestHotelByRating(LocalDate startDate, LocalDate endDate) {
-        // @description: Finds the cheapest hotel based on hotel ratings for a specified date range.
-        // @parameters: LocalDate startDate - the start date of the date range,
-        //              LocalDate endDate - the end date of the date range.
         Hotel cheapestHotel = null;
         for (Hotel hotel : hotels) {
-            if (cheapestHotel == null || compareHotels(hotel, cheapestHotel) < 0) {
+            if (cheapestHotel == null || compareHotels(hotel, cheapestHotel, startDate, endDate) < 0) {
                 cheapestHotel = hotel;
             }
         }
-        return (cheapestHotel != null) ? cheapestHotel.getName() + ", Total Rates: $" + calculateTotalHotelCost(cheapestHotel, startDate, endDate) : "No Hotels Available";
+        return (cheapestHotel != null) ? cheapestHotel.getName() + ", Total Rates: $" +
+                new HotelReservation().calculateTotalHotelCost(cheapestHotel, startDate, endDate) : "No Hotels Available";
+    }
+
+    /**
+     * Finds the best-rated hotel.
+     *
+     * @return The best-rated hotel.
+     */
+    @Override
+    public Hotel findBestRatedHotel(LocalDate startDate, LocalDate endDate) {
+        Hotel bestRatedHotel = null;
+
+        for (Hotel hotel : hotels) {
+            if (bestRatedHotel == null || compareHotels(hotel, bestRatedHotel, startDate, endDate) >0) {
+                bestRatedHotel = hotel;
+            }
+        }
+
+        return bestRatedHotel;
     }
 
     /**
@@ -96,12 +114,30 @@ public class HotelReservation {
      *
      * @param hotel1 The first hotel.
      * @param hotel2 The second hotel.
-     * @return The result of the comparison (-1 if hotel1 has a lower rating, 0 if equal, 1 if hotel1 has a higher rating).
+     * @param startDate starting date.
+     * @param endDate ending date.
+     * @return An integer representing the comparison result.
      */
-    public int compareHotels(Hotel hotel1, Hotel hotel2) {
-        // @description: Compares two hotels based on their ratings.
-        // @parameters: Hotel hotel1 - the first hotel,
-        //              Hotel hotel2 - the second hotel.
-        return Integer.compare(hotel1.getRating(), hotel2.getRating());
+    public int compareHotels(Hotel hotel1, Hotel hotel2, LocalDate startDate, LocalDate endDate) {
+        /**
+         * Comparing the ratings of hotels.
+         * @param rating1 Rating of first Hotel.
+         * @param rating2 Rating of second Hotel.
+         */
+        int ratingComparison = Integer.compare(hotel1.getRating(), hotel2.getRating());
+
+        /**
+         * If the ratings are same then comparing the rates.
+         * Using 'if' if the rating is equal
+         * @param TotalCostHotel1 total cost of hotel 1.
+         * @param TotalCostHotel2 total cost of hotel 2.
+         * @return the cheapest hotel
+         * @return the best rated hotel if the rate isn't equal
+         */
+        if(ratingComparison == 0) {
+            int totalCostComparison = Integer.compare(calculateTotalHotelCost(hotel1, startDate, endDate), calculateTotalHotelCost(hotel2, startDate, endDate));
+            return totalCostComparison;
+        }
+        return ratingComparison;
     }
 }
