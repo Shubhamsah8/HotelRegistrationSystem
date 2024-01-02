@@ -8,39 +8,35 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 /**
- * ReservationSystemTest class for testing hotel-related functionality.
+ * ReservationSystemTest class to test the Hotel and HotelReservation classes.
  */
 class ReservationSystemTest {
 
     /**
-     * Tests the getName method of the Hotel class.
+     * Test case to verify if the hotel name is set correctly.
      */
     @Test
     void testHotelName() {
-        // @description: Tests the getName method of the Hotel class.
         Hotel hotel1 = new Hotel("Lakewood");
         Assert.assertEquals("Lakewood", hotel1.getName());
     }
 
     /**
-     * Tests the addRates and getRates methods of the Hotel class.
+     * Test case to verify if the hotel rates are added and retrieved correctly.
      */
     @Test
     void testRate() {
-        // @description: Tests the addRates and getRates methods of the Hotel class.
         Hotel hotel1 = new Hotel("Lakewood");
         hotel1.addRates(LocalDate.of(2023, 12, 5), 560);
         Assert.assertEquals(560, hotel1.getRates(LocalDate.of(2023, 12, 5)));
     }
 
     /**
-     * Tests the findCheapestHotel method of the HotelReservation class.
+     * Test case to find the cheapest hotel within a date range and verify the result.
      */
     @Test
     void testFindCheapestHotel() {
-        // @description: Tests the findCheapestHotel method of the HotelReservation class.
         Hotel lakewood = new Hotel("Lakewood");
         lakewood.addRates(LocalDate.of(2023, 12, 1), 600);
         lakewood.addRates(LocalDate.of(2023, 12, 2), 500);
@@ -64,11 +60,10 @@ class ReservationSystemTest {
     }
 
     /**
-     * Tests the setRating and getRating methods of the Hotel class.
+     * Test case to verify if the hotel rating is set correctly.
      */
     @Test
     void testRating() {
-        // @description: Tests the setRating and getRating methods of the Hotel class.
         Hotel hotel1 = new Hotel("Lakewood");
         hotel1.addRates(LocalDate.of(2023, 12, 1), 500);
         hotel1.setRating(4);
@@ -76,21 +71,9 @@ class ReservationSystemTest {
     }
 
     /**
-     * Tests the findCheapestHotelByRating method of the HotelReservation class.
+     * Test case to find the cheapest hotel by rating within a date range and verify the result.
      */
-    @Test
-    void testCheapestHotelByRating() {
-        // @description: Tests the findCheapestHotelByRating method of the HotelReservation class.
-        Assert.assertEquals("Bridgewood, Total Rates: $600", testRatings());
-    }
-
-    /**
-     * Helper method for testing findCheapestHotelByRating method.
-     *
-     * @return A string containing the name of the cheapest hotel by rating and its total rate for a specified date range.
-     */
-    public static String testRatings() {
-        // @description: Helper method for testing findCheapestHotelByRating method.
+    public static String testRatn() {
         Hotel hotel1 = new Hotel("Lakewood");
         hotel1.addRates(LocalDate.of(2023, 12, 1), 560);
         hotel1.addRates(LocalDate.of(2023, 12, 2), 570);
@@ -105,6 +88,7 @@ class ReservationSystemTest {
         hotel3.addRates(LocalDate.of(2023, 12, 1), 520);
         hotel3.addRates(LocalDate.of(2023, 12, 2), 530);
         hotel3.setRating(4);
+
         HotelReservation hotelReservation = new HotelReservation();
 
         hotelReservation.addHotel(hotel1);
@@ -112,5 +96,42 @@ class ReservationSystemTest {
         hotelReservation.addHotel(hotel3);
 
         return hotelReservation.findCheapestHotelByRating(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 2));
+    }
+
+    /**
+     * Test case to find the cheapest hotel by rating within a date range and verify the result.
+     */
+    @Test
+    void testCheapestHotelByRting() {
+        Assert.assertEquals("Bridgewood, Total Rates: $600", ReservationSystemTest.testRatn());
+    }
+
+    /**
+     * Test case to find the best-rated hotel and verify the result.
+     */
+    @Test
+    void testBestRatedHotel() {
+        Hotel hotel1 = new Hotel("Lakewood");
+        hotel1.addRates(LocalDate.of(2023, 12, 1), 560);
+        hotel1.addRates(LocalDate.of(2023, 12, 2), 570);
+        hotel1.setRating(5);
+
+        Hotel hotel2 = new Hotel("Bridgewood");
+        hotel2.addRates(LocalDate.of(2023, 12, 1), 600);
+        hotel2.addRates(LocalDate.of(2023, 12, 2), 600);
+        hotel2.setRating(5);
+
+        Hotel hotel3 = new Hotel("Redwood");
+        hotel3.addRates(LocalDate.of(2023, 12, 1), 520);
+        hotel3.addRates(LocalDate.of(2023, 12, 2), 530);
+        hotel3.setRating(4);
+
+        HotelReservation hotelReservation = new HotelReservation();
+
+        hotelReservation.addHotel(hotel1);
+        hotelReservation.addHotel(hotel2);
+        hotelReservation.addHotel(hotel3);
+
+        Assert.assertEquals("Bridgewood", hotelReservation.findBestRatedHotel(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 2)).getName());
     }
 }
