@@ -3,6 +3,7 @@ package org.example;
 import java.time.LocalDate;
 import java.util.*;
 import java.time.DayOfWeek;
+import java.util.stream.*;
 
 /**
  * Hotel class representing a hotel with regular and weekend rates.
@@ -10,7 +11,6 @@ import java.time.DayOfWeek;
 public class Hotel {
 
     private String name;
-    private Map<LocalDate, Integer> regularRates;
     private Map<LocalDate, Integer> weekdayRate;
     private Map<LocalDate, Integer> weekendRate;
     private int rating;
@@ -24,7 +24,6 @@ public class Hotel {
      */
     public Hotel(String name) {
         this.name = name;
-        this.regularRates = new HashMap<>();
         this.weekdayRate = new HashMap<>();
         this.weekendRate = new HashMap<>();
         this.rating = 0;
@@ -73,7 +72,6 @@ public class Hotel {
      public void addSpecialRates(LocalDate date, int rate){
          addRates(date, rate, true);
      }
-
     /**
      * Gets the rate for a specific date.
      *
@@ -103,9 +101,9 @@ public class Hotel {
      * @param date The date for which the regular rate is added.
      * @param rate The regular rate for the specified date.
      */
-    public void addRegularRates(LocalDate date, int rate) {
-        regularRates.put(date, rate);
-    }
+//    public void addRegularRates(LocalDate date, int rate) {
+//        regularRates.put(date, rate);
+//    }
 
     /**
      * Gets the regular rate for a specific date.
@@ -113,9 +111,9 @@ public class Hotel {
      * @param date The date for which the regular rate is retrieved.
      * @return The regular rate for the specified date.
      */
-    public int getRegularRates(LocalDate date) {
-        return regularRates.get(date);
-    }
+//    public int getRegularRates(LocalDate date) {
+//        return regularRates.get(date);
+//    }
 
     /**
      * Gets the rating of the hotel.
