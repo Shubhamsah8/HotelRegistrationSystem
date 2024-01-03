@@ -54,9 +54,8 @@ class ReservationSystemTest {
         hotelReservation.addHotel(redwood);
         hotelReservation.addHotel(bridgewood);
 
-        String cheapHotel = hotelReservation.findCheapestHotel(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 15));
-        System.out.println(cheapHotel);
-        Assert.assertEquals("Redwood Total Rate: $800", cheapHotel);
+        String cheapHotel = hotelReservation.findCheapestHotel(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 2));
+        Assert.assertEquals("Bridgewood, Total Rates: $750", cheapHotel);
     }
 
     /**
@@ -73,7 +72,8 @@ class ReservationSystemTest {
     /**
      * Test case to find the cheapest hotel by rating within a date range and verify the result.
      */
-    public static String testRatn() {
+    @Test
+    void testCheapestHotelByRating() {
         Hotel hotel1 = new Hotel("Lakewood");
         hotel1.addRates(LocalDate.of(2023, 12, 1), 560);
         hotel1.addRates(LocalDate.of(2023, 12, 2), 570);
@@ -84,7 +84,7 @@ class ReservationSystemTest {
         hotel2.addRates(LocalDate.of(2023, 12, 2), 600);
         hotel2.setRating(5);
 
-        Hotel hotel3 = new Hotel("Redwood");
+        Hotel hotel3 = new Hotel("Ridgewood");
         hotel3.addRates(LocalDate.of(2023, 12, 1), 520);
         hotel3.addRates(LocalDate.of(2023, 12, 2), 530);
         hotel3.setRating(4);
@@ -94,16 +94,7 @@ class ReservationSystemTest {
         hotelReservation.addHotel(hotel1);
         hotelReservation.addHotel(hotel2);
         hotelReservation.addHotel(hotel3);
-
-        return hotelReservation.findCheapestHotelByRating(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 2));
-    }
-
-    /**
-     * Test case to find the cheapest hotel by rating within a date range and verify the result.
-     */
-    @Test
-    void testCheapestHotelByRting() {
-        Assert.assertEquals("Bridgewood, Total Rates: $600", ReservationSystemTest.testRatn());
+        Assert.assertEquals("Bridgewood, Total Rates: $1200", hotelReservation.findCheapestHotelByRating(LocalDate.of(2023,12, 1), LocalDate.of(2023, 12, 2)));
     }
 
     /**
@@ -132,7 +123,7 @@ class ReservationSystemTest {
         hotelReservation.addHotel(hotel2);
         hotelReservation.addHotel(hotel3);
 
-        Assert.assertEquals("Bridgewood", hotelReservation.findBestRatedHotel(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 2)).getName());
+        Assert.assertEquals("Lakewood", hotelReservation.findBestRatedHotel(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 2)).getName());
     }
 
     /**
@@ -186,6 +177,6 @@ class ReservationSystemTest {
         hotelReservation.addHotel(bridgewood);
         hotelReservation.addHotel(ridgewood);
 
-        Assert.assertEquals("lakewood", hotelReservation.findCheapestBestRatedHotelForRewardCustomer(LocalDate.of(2023, 12, 31), LocalDate.of(2024, 1, 1)).getName());
+        Assert.assertEquals("lakewood Total Rates: $160", hotelReservation.findCheapestBestRatedHotelForRewardCustomer(LocalDate.of(2023, 12, 31), LocalDate.of(2024, 1, 1)));
     }
 }
