@@ -26,4 +26,11 @@ public class HotelReservation {
     public void addHotel(Hotel hotel) {
         hotels.add(hotel);
     }
+
+    /**
+        @description: Get the List of the hotels.
+        @return: return the List of the hotels.
+    */
+    public List<Hotel> getHotel(){
+        return hotels;
 }
