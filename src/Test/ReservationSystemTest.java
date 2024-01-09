@@ -47,4 +47,23 @@ class ReservationSystemTest {
         */
         Assert.assertEquals(560, hotel1.getRegularRates(LocalDate.of(2023, 12,5)));
     }
+    /*
+        @description: Test the number of times the Hotels get created.
+        @parameters: None
+        @return: None
+    */
+    @Test
+    void testHotels(){
+        Hotel hotel1 = new Hotel("Lakewood");
+        Hotel hotel2 = new Hotel("Redwood");
+        HotelReservation hotelReservation = new HotelReservation();
+        hotelReservation.addHotel(hotel1);
+        hotelReservation.addHotel(hotel2);
+
+        /*
+            @desctiption: Validates that the retrieved no. of Hotels for the no. of hotels get created.
+            @parameters: None
+            @return: Expects the no. of Hotels to be 2.
+        */
+        Assert.assertEquals(2, hotelReservation.getHotel().size());
 }
