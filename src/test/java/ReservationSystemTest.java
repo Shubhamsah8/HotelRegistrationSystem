@@ -56,4 +56,29 @@ class ReservationSystemTest {
     @Test
     void testFindCheapestHotel(){
         Hotel lakewood = new Hotel("Lakewood");
-        lakewood.addRegularRat
+        lakewood.addRates(LocalDate.of(2023, 12, 1), 600);
+        lakewood.addRates(LocalDate.of(2023, 12, 2), 500);
+
+        Hotel redwood = new Hotel("Redwood");
+        redwood.addRates(LocalDate.of(2023, 12, 1), 300);
+        redwood.addRates(LocalDate.of(2023, 12, 2), 500);
+
+        Hotel bridgewood = new Hotel("Bridgewood");
+        bridgewood.addRates(LocalDate.of(2023,12, 1), 350);
+        bridgewood.addRates(LocalDate.of(2023, 12, 2), 400);
+
+        HotelReservation hotelReservation = new HotelReservation();
+        hotelReservation.addHotel(lakewood);
+        hotelReservation.addHotel(redwood);
+        hotelReservation.addHotel(bridgewood);
+
+        /*
+            @description: Validates that the cheapest hotel for the date range is "Redwood" with a total rate of $800.
+            @parameters: None
+            @return: Expects the result string to be "Redwood Total Rate: $800".
+        */
+        String cheapHotel = hotelReservation.findCheapestHotel(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 15));
+        System.out.println(cheapHotel);
+        Assert.assertEquals("Redwood Total Rate: $800", cheapHotel);
+    }
+}
