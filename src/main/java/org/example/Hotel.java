@@ -13,7 +13,6 @@ public class Hotel {
     private Map<LocalDate, Integer> regularRates;
     private Map<LocalDate, Integer> weekdayRate;
     private Map<LocalDate, Integer> weekendRate;
-    private int rating;
 
     /*
         @description: Constructor to initialize a Hotel object with the given name.
@@ -25,7 +24,6 @@ public class Hotel {
         this.regularRates = new HashMap<>();
         this.weekdayRate = new HashMap<>();
         this.weekendRate = new HashMap<>();
-        this.rating = 0;
     }
 
     /*
